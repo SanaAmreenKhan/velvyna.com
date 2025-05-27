@@ -25,14 +25,14 @@ const Footer = () => {
           <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
           <ul className="flex flex-col gap-1 text-gray-600">
             <li>+1-111-222-3333</li>
-            <li>contact@quickerly.com</li>
+            <li>contact@Velvyna.com</li>
           </ul>
         </div>
       </div>
       <div>
         <hr />
         <p className="py-5 text-sm text-center">
-          Copyright 2025@ quickerly.com - All rights reserved
+          Copyright 2025@ Velvyna.com - All rights reserved
         </p>
       </div>
     </div>
