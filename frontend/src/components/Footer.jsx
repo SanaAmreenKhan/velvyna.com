@@ -8,8 +8,9 @@ const Footer = () => {
         <div>
           <img src={assets.logo} className="mb-5 w-32" alt="" />
           <p className="w-full md:w-2/3 text-gray-600">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore,
-            aut.
+            Velvyna brings you timeless fashion and curated styles, blending
+            comfort and elegance for every season. Shop with confidence and step
+            into your best look.
           </p>
         </div>
         <div>
@@ -24,8 +25,9 @@ const Footer = () => {
         <div>
           <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
           <ul className="flex flex-col gap-1 text-gray-600">
-            <li>+1-111-222-3333</li>
-            <li>contact@Velvyna.com</li>
+            <li>📞 +1-111-222-3333</li>
+            <li>✉️ contact@velvyna.com</li>
+            <li>📍 Jeddah, Saudi Arabia</li>
           </ul>
         </div>
       </div>
