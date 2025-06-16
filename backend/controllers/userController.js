@@ -85,7 +85,10 @@ const loginAdmin = async (req, resp) => {
     } else {
       resp.json({ success: false, message: "Invalid credentials" });
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return resp.json({ success: false, message: error.message });
+  }
 };
 
 export { loginUser, registerUser, loginAdmin };
