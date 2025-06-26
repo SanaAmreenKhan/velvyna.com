@@ -4,31 +4,43 @@ const addToCart = async (req, resp) => {
   try {
     const { userId, itemId, size } = req.body;
 
-    const userData = await userModel.findById(userId);
-    console.log(userData);
-    let cartData = userData.cartData || {}; // Ensure it's at least an empty object
-
-    // Safety check for itemId and size
-    if (itemId && size) {
-      if (!cartData[itemId]) {
-        cartData[itemId] = {};
-      }
-
-      if (!cartData[itemId][size]) {
-        cartData[itemId][size] = 0;
-      }
-
-      cartData[itemId][size] += 1;
-    } else {
-      console.error("itemId or size is undefined.");
+    if (!userId || !itemId || !size) {
+      return resp.status(400).json({
+        success: false,
+        message: "Missing userId, itemId or size",
+      });
     }
 
+    const userData = await userModel.findById(userId);
+
+    if (!userData) {
+      return resp.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Clone or initialize cartData
+    let cartData = userData.cartData || {};
+
+    // Initialize item if it doesn't exist
+    if (!cartData[itemId]) {
+      cartData[itemId] = {};
+    }
+
+    // Initialize size count if not exist
+    cartData[itemId][size] = (cartData[itemId][size] || 0) + 1;
+
+    // Save the updated cart to DB
     await userModel.findByIdAndUpdate(userId, { cartData });
 
-    resp.json({ success: true, message: "Added to Cart" });
+    return resp.json({ success: true, message: "Added to Cart" });
   } catch (error) {
-    console.log(error);
-    resp.json({ success: false, message: error.message });
+    console.error("Add to cart error:", error);
+    return resp.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
   }
 };
 
@@ -53,6 +65,7 @@ const getCartData = async (req, resp) => {
   try {
     const { userId } = req.body;
     const userData = await userModel.findById(userId);
+    console.log(userData, userId);
     let cartData = await userData.cartData;
 
     resp.json({ success: true, cartData });

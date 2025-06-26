@@ -17,29 +17,31 @@ const SHopContextProvider = (props) => {
   const [token, setToken] = useState("");
 
   const navigate = useNavigate();
-
   const addToCart = async (itemId, size) => {
-    let cartData = structuredClone(cartItems);
-
     if (!size) {
       toast.error("Please Select Product Size");
       return;
     }
 
-    if (cartData[itemId]) {
-      if (cartData[itemId][size]) {
-        cartData[itemId][size] += 1;
-      } else {
-        cartData[itemId][size] = 1;
-      }
-    } else {
+    // Ensure cartItems is a valid object
+    const cartData = structuredClone(cartItems || {});
+
+    // Initialize item entry if not exists
+    if (!cartData[itemId]) {
       cartData[itemId] = {};
-      cartData[itemId][size] = 1;
     }
+
+    // Increment or set the size count
+    cartData[itemId][size] = (cartData[itemId][size] || 0) + 1;
+
+    // Update state
     setCartItems(cartData);
-    console.log("hiiii");
+
+    // Log for debugging
+    console.log("Cart updated locally");
+
+    // Sync with backend if user is logged in
     if (token) {
-      console.log("data");
       try {
         await axios.post(
           backendUrl + "/api/cart/add",
@@ -47,8 +49,7 @@ const SHopContextProvider = (props) => {
           { headers: { token } }
         );
       } catch (error) {
-        console.log(error);
-
+        console.error("Cart sync failed:", error);
         toast.error(error.message);
       }
     }
